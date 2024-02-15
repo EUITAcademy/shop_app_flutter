@@ -1,0 +1,72 @@
+[
+    {
+        "id": "random_id_1",
+        "title": "Boots man",
+        "subtitle": "Black Elegant Boots",
+        "imageUrl": "http://localhost:8080/boots_men.jpeg",
+        "price": 109.99
+    },
+    {
+        "id": "random_id_2",
+        "title": "Hat",
+        "subtitle": "Mans elegant brown hat",
+        "imageUrl": "http://localhost:8080/hat.jpeg",
+        "price": 119.99
+    },
+    {
+        "id": "random_id_3",
+        "title": "Jeans",
+        "subtitle": "Denim original jeans",
+        "imageUrl": "http://localhost:8080/jeans.jpeg",
+        "price": 259.99
+    },
+    {
+        "id": "random_id_4",
+        "title": "Pink shoes",
+        "subtitle": "Beautiful ladies pink shoes",
+        "imageUrl": "http://localhost:8080/pink-shoes.jpeg",
+        "price": 109.99
+    },
+    {
+        "id": "random_id_5",
+        "title": "Red shirt",
+        "subtitle": "Casual red shirt",
+        "imageUrl": "http://localhost:8080/red_shirt.jpeg",
+        "price": 109.99
+    },
+    {
+        "id": "random_id_6",
+        "title": "Shoes woman",
+        "subtitle": "Casual Shoes for woman",
+        "imageUrl": "http://localhost:8080/shoes_woman.jpeg",
+        "price": 109.99
+    },
+    {
+        "id": "random_id_7",
+        "title": "Casual shoes",
+        "subtitle": "Casual shoes for woman",
+        "imageUrl": "http://localhost:8080/shoes-1.jpeg",
+        "price": 99.99
+    },
+    {
+        "id": "random_id_8",
+        "title": "Cool Sneakers",
+        "subtitle": "Casual sneakers for every day",
+        "imageUrl": "http://localhost:8080/sneakers.jpeg",
+        "price": 99.99
+    },
+    {
+        "id": "random_id_9",
+        "title": "Striped shirt",
+        "subtitle": "Mens striped shirt",
+        "imageUrl": "http://localhost:8080/striped-shirt.jpeg",
+        "price": 99.99
+    },
+    {
+        "id": "random_id_10",
+        "title": "White Tshirt",
+        "subtitle": "Mens casial white Tshirt",
+        "imageUrl": "http://localhost:8080/white_shirt.jpeg",
+        "price": 99.99
+    }
+]
