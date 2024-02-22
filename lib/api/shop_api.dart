@@ -15,11 +15,12 @@ abstract class ShopApi {
     required String password,
   }) async {
     final dio = Dio(BaseOptions(baseUrl: _baseUrl));
-    final response = await dio.post(
+    final Response response = await dio.post(
       '/login',
       data: jsonEncode({'email': email, 'password': password}),
     );
-    // data comes decoded
+    // Note: here we do not have to jsonEncode(response.data),
+    // because dio does it for us.
     return AuthData.fromJson(response.data);
   }
 
@@ -36,8 +37,6 @@ abstract class ShopApi {
       '/signup',
       data: jsonEncode({'email': email, 'password': password}),
     );
-    print(response.data);
-    // data comes decoded
     return AuthData.fromJson(response.data);
   }
 

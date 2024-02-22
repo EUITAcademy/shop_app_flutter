@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shop_app_flutter/api/shop_api.dart';
 import 'package:shop_app_flutter/models/shop_item.dart';
-import 'package:shop_app_flutter/provider/cart_provider.dart';
 
 class CartScreen extends StatelessWidget {
   static const String routeName = '/cart';
@@ -11,13 +8,18 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cart'),
       ),
-      body: Consumer<CartProvider>(
-        builder: (context, cart, child) {
-          final items = cart.items;
+      // Builder provides us with convenient builder function,
+      // We can calculate some logic before returning Widget
+      body: Builder(
+        builder: (context) {
+
+          // Todo: Get from provider
+          final List<ShopItem> items = [];
 
           // unique list of items (we will show only 1 item of a kind in a list)
           // Set is a collection of unique items, this will remove duplicates
@@ -44,37 +46,15 @@ class CartScreen extends StatelessWidget {
 
               const SizedBox(height: 8),
               // This widget won't rebuild (in our case button)
-              child!,
+              ElevatedButton(
+                onPressed: () async {
+                  // Todo: Implement Order here
+                },
+                child: const Text('Order'),
+              ),
             ],
           );
         },
-        // This widget won't rebuild
-        child: ElevatedButton(
-          onPressed: () async {
-            // Order here
-            try {
-              final message = await ShopApi.order(
-                items: Provider.of<CartProvider>(context, listen: false).items,
-              );
-              // To get rid of the warning
-              bool mounted = true;
-              if (mounted) {
-                Provider.of<CartProvider>(context, listen: false).removeAll();
-
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(message)));
-              }
-            } catch (err) {
-              // To get rid of the warning
-              bool mounted = true;
-              if (mounted) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(err.toString())));
-              }
-            }
-          },
-          child: const Text('Order'),
-        ),
       ),
     );
   }
@@ -99,7 +79,7 @@ class CartScreen extends StatelessWidget {
         TextButton(
           child: const Text('Remove'),
           onPressed: () {
-            Provider.of<CartProvider>(context, listen: false).removeOne(item);
+            // Todo: Implement remove from cart
           },
         ),
       ],

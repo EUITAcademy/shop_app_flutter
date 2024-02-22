@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app_flutter/api/shop_api.dart';
-import 'package:shop_app_flutter/models/auth_data.dart';
-import 'package:shop_app_flutter/screens/shop_screen.dart';
-import 'package:shop_app_flutter/util/token_manager.dart';
 
+// Enum type.
+// An Enum, short for enumeration,
+// is a type of data type in programming that consists of a set of named values.
+// These named values, often referred to as members or enumerators, are constant and do not change.
 enum AuthAction { login, signup }
 
 class AuthScreen extends StatefulWidget {
+  // Route name for this screen.
+  // Static properties are attributes that belong to a class, rather than to an instance of that class.
+  // Can be accessed with AuthScreen.routeName
   static const String routeName = '/auth';
 
   const AuthScreen({Key? key}) : super(key: key);
@@ -16,16 +19,11 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  // For toggling signup/login
+
+  // For toggling signup/login (This enum type can be either login or signup)
   AuthAction authAction = AuthAction.login;
 
-  // Show loader
-  bool _isLoading = false;
-
-  // Manipulating form
-  // For example checking if form is valid or submitting
-  final _formKey = GlobalKey<FormState>();
-
+  // With TextEditingController we can access text from anywhere and clear textfields
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -41,56 +39,18 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Future<void> _authenticate() async {
-    // Show loader
-    _isLoading = true;
-    setState(() {});
-    try {
-      // Validate
-      if (_formKey.currentState!.validate()) {
-        // SignUp or SignIn
-        late final AuthData authData;
-        if (authAction == AuthAction.signup) {
-          authData = await ShopApi.signup(
-            email: emailController.text,
-            password: passwordController.text,
-          );
-        } else {
-          authData = await ShopApi.login(
-            email: emailController.text,
-            password: passwordController.text,
-          );
-        }
-        // Save token
-        await TokenManager.setToken(authData);
-
-        // State object is currently in a tree, context is available
-        if (mounted) {
-          Navigator.of(context).pushReplacementNamed(ShopScreen.routeName);
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please fill all inputs'),
-          ),
-        );
-      }
-    } catch (err) {
-      print(err);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(err.toString()),
-          ),
-        );
-      }
-    } finally {
-      _isLoading = false;
-      setState(() {});
-    }
+    // Todo: Authenticate here
   }
 
   @override
   void dispose() {
+    // disposing of TextEditingController is important to prevent memory leaks.
+    // When you create a TextEditingController, it creates a link between the UI and the memory.
+    // When you're done using the TextEditingController,
+    // you should call dispose to break the link and free up the memory that it was using.
+    // If you don't dispose of it, the link remains, and Flutter might update
+    // the UI elements that are no longer visible, leading to unnecessary memory usage and
+    // potential performance issues.
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -100,115 +60,88 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Creates appBar
       appBar: AppBar(
         title: const Text("My Shop App"),
       ),
+      // SingleChildScrollView ensures widget can scroll
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextFormField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Email",
-                    ),
-                    validator: (value) {
-                      if (value != null &&
-                          value.length > 6 &&
-                          value.contains('@')) {
-                        return null;
-                      }
-                      return 'Please provide valid email';
-                    },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Email",
                   ),
                 ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  controller: passwordController,
+                  // Ensures we have obscure dots instead of characters
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Password",
+                  ),
+                ),
+              ),
+              if (authAction == AuthAction.signup)
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextFormField(
-                    controller: passwordController,
+                  child: TextField(
+                    controller: confirmPasswordController,
                     // Ensures we have obscure dots instead of characters
                     obscureText: true,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: "Password",
+                      labelText: "Confirm Password",
                     ),
-                    validator: (value) {
-                      if (value != null && value.length >= 6) {
-                        return null;
-                      }
-                      return 'Please enter valid password';
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 16.0,
+                ),
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      _authenticate();
                     },
+                    child: const Text('Submit'),
                   ),
                 ),
-                if (authAction == AuthAction.signup)
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: TextFormField(
-                      controller: confirmPasswordController,
-                      // Ensures we have obscure dots instead of characters
-                      obscureText: true,
-                      // If authAction is login, we must also disable validation
-                      autovalidateMode: authAction == AuthAction.login
-                          ? AutovalidateMode.disabled
-                          : null,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Confirm Password",
-                      ),
-                      validator: (value) {
-                        if (value == passwordController.text) {
-                          return null;
-                        }
-                        return 'Passwords should match';
-                      },
-                    ),
-                  ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 16.0,
-                  ),
-                  child: Center(
-                    child: _isLoading
-                        ? const CircularProgressIndicator()
-                        : ElevatedButton(
-                            onPressed: () async {
-                              _authenticate();
-                            },
-                            child: const Text('Submit'),
-                          ),
-                  ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 16.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 16.0,
-                  ),
-                  child: Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _toggleAuthAction();
-                      },
-                      child: Text(
-                        authAction == AuthAction.signup
-                            ? 'Login instead'
-                            : 'Signup instead',
-                      ),
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _toggleAuthAction();
+                    },
+                    child: Text(
+                      authAction == AuthAction.signup
+                          ? 'Login instead'
+                          : 'Signup instead',
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
