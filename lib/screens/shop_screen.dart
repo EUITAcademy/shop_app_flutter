@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app_flutter/api/shop_api.dart';
 import 'package:shop_app_flutter/models/shop_item.dart';
-import 'package:shop_app_flutter/provider/cart_provider.dart';
 import 'package:shop_app_flutter/screens/auth_screen.dart';
 import 'package:shop_app_flutter/widgets/cart_button.dart';
 
@@ -95,8 +93,7 @@ class _ShopScreenState extends State<ShopScreen> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  // Add to provider like this:
-                  Provider.of<CartProvider>(context, listen: false).add(item);
+                 // Todo: Add item to cart
                 },
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),
