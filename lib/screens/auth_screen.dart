@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shop_app_flutter/api/shop_api.dart';
 import 'package:shop_app_flutter/models/auth_data.dart';
 import 'package:shop_app_flutter/screens/shop_screen.dart';
-import 'package:shop_app_flutter/util/token_manager.dart';
 
 enum AuthAction { login, signup }
 
@@ -60,8 +59,7 @@ class _AuthScreenState extends State<AuthScreen> {
             password: passwordController.text,
           );
         }
-        // Save token
-        await TokenManager.setToken(authData);
+
 
         // State object is currently in a tree, context is available
         if (mounted) {
