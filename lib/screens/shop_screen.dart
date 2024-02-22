@@ -95,8 +95,7 @@ class _ShopScreenState extends State<ShopScreen> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  // Add to provider like this:
-                  Provider.of<CartProvider>(context, listen: false).add(item);
+                  // Todo: add item to cart
                 },
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),
